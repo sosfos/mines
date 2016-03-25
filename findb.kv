@@ -1,0 +1,102 @@
+#:kivy 1.9.1
+#:import Rectangle kivy.graphics.Rectangle
+
+<BButton>:
+    image:_image
+    size_hint:1,1
+    Image:
+        id:_image
+        opacity:0
+        source:'flag.png'
+        size_hint:None,None
+        pos_hint:None,None
+        size:root.size
+        pos:root.pos
+
+<BLabel>:
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.3, 0.4, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Line:
+            points:self.x,self.y,self.x+self.width,self.y
+        Line:
+            points:self.x,self.y,self.x,self.y+self.height
+        Line:
+            points:self.x,self.y+self.height,self.x+self.width,self.y+self.height
+        Line:
+            points:self.x+self.width,self.y,self.x+self.width,self.y+self.height
+            
+
+<BBox>:
+    size_hint:1,1
+
+<ResetButton@Button>:
+    image:_image
+    size_hint:None,1
+    Image:
+        id:_image
+        opacity:1
+        source:'smile.png'
+        size_hint:None,None
+        pos_hint:None,None
+        size:root.size
+        pos:root.pos
+
+
+<StatusBar@RelativeLayout>:
+    toggle_mark:_toggle_mark
+    button_reset:_button_reset
+    label_left_bomb:_label_left_bomb
+    label_level:_label_level
+    size_hint:1,None
+    height:40
+    Label:
+        id:_label_left_bomb
+        size_hint:None,1
+        width:100
+        x:0
+        text:'0'
+    Label:
+        id:_label_level
+        size_hint:None,1
+        width:60
+        x:root.x + 100
+        text:'Level:1'
+    ResetButton:
+        id:_button_reset
+        width:60
+        x:root.x + (root.width - self.width)/2
+        on_press:app.root.Restart()
+    Button:
+        text:'...'
+        size_hint:None,1
+        width:30
+        x:root.x + root.width - self.width - _toggle_mark.width
+        on_press:app.open_settings()
+    ToggleButton:
+        id:_toggle_mark
+        size_hint:None,1
+        width:80
+        x:root.x + root.width - self.width
+        text:'Mark'
+        
+<PlayArea>:
+    size_hint:1,1
+
+
+<FindBWidget>:
+    play_area:_play_area
+    status_bar:_status_bar
+    
+    background_color:0,1,0,1
+    orientation:'vertical'
+    StatusBar:
+        id:_status_bar
+    PlayArea:
+        id:_play_area
