@@ -24,6 +24,7 @@ import copy
 Rows_For_First_Level = 3
 Max_Level = 15
 
+'''
 class BButton(Button):
     def __init__(self,box,**kwargs):
         super(BButton,self).__init__(**kwargs)
@@ -69,11 +70,10 @@ class BButton(Button):
 
 class BLabel(Label):
     pass
-
-class BBox(RelativeLayout):
+'''
+class BBox():
     BNumber = NumericProperty(0)
     def __init__(self,root,**kwargs):
-        super(BBox,self).__init__(**kwargs)
         self.isBomb = False
         self.BNumber = 0
         self.root = root
@@ -81,15 +81,10 @@ class BBox(RelativeLayout):
         self.row = 0
         self.col = 0
         self.state=0 # 0 means normal, 1 means marked as bomb, -1 means cleared already
+        self.pos = (0,0)
+        self.size = (0,0)
         
-        self.blabel = BLabel()
-        self.bbutton = BButton(box=self)
-        
-        self.add_widget(self.bbutton)
-        
-    def on_BNumber(self,instance,value):
-        self.blabel.text = '{}'.format(value) if value > 0 else ''
-    
+
     def Clear(self,isShowAll=False):
         '''
         triggered when user click the button and think it's empty or has a number
@@ -101,7 +96,7 @@ class BBox(RelativeLayout):
             if isShowAll == False:
                 self.root.GameOver()
                 self.Explode()
-                self.bbutton.image.source='gameoverflag.png'
+                #self.bbutton.image.source='gameoverflag.png'
         else:
             self.MarkNumberOrEmpty()
             
@@ -125,8 +120,6 @@ class BBox(RelativeLayout):
             return
         
         if self.BNumber == 0 and self.isClear == False:
-            self.clear_widgets()
-            self.add_widget(self.blabel)
             self.isClear = True
 
             self.root.Clear(self.row - 1,self.col - 1)
@@ -139,8 +132,6 @@ class BBox(RelativeLayout):
             self.root.Clear(self.row + 1,self.col + 1)
                     
         elif self.BNumber > 0 and self.isClear == False:
-            self.clear_widgets()
-            self.add_widget(self.blabel)
             self.isClear = True
             
         self.state = -1
@@ -149,7 +140,7 @@ class BBox(RelativeLayout):
             self.root.sounds['state'].play()
        
     
-class PlayArea(GridLayout):
+class PlayArea(Widget):
     pass
 
 class FindBWidget(BoxLayout):
@@ -221,7 +212,7 @@ class FindBWidget(BoxLayout):
         self.play_area.cols = self.gridSize_width
         self.play_area.rows = self.gridSize_height
         
-        print 'Before Adding Box: {}'.format(clock())
+        '''
         for i in range(0,self.gridSize_height):
             for j in range(0,self.gridSize_width):
                 b = BBox(root=self)
@@ -229,14 +220,12 @@ class FindBWidget(BoxLayout):
                 b.col=j
                 self.BBoxList.append(b)
                 self.play_area.add_widget(b)
-        
-        print 'Before Calculate: {}'.format(clock())
+        '''
         self._calculate_bombs()
         
         self.status_bar.toggle_mark.disable = False
         self.status_bar.toggle_mark.state = "normal"
         self.status_bar.button_reset.image.source='smile.png'
-        print 'End: {}'.format(clock())
 
     def _calculate_bombs(self):
         if self.custimize:
@@ -369,7 +358,7 @@ class FindBWidget(BoxLayout):
         self.status_bar.button_reset.image.source='gameover.png'
         self.gameover = True
     
-class FindBApp(App): 
+class MinesApp(App): 
     use_kivy_settings = False
     clearcolor = (0.2, 0.2, 0.2, 1)
     title = 'Find Bombs'
@@ -473,5 +462,5 @@ class FindBApp(App):
                 Window.toggle_fullscreen()
                 
 if __name__ == '__main__':
-    fapp = FindBApp()
-    fapp.run()
+    mines = MinesApp()
+    mines.run()

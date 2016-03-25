@@ -1,41 +1,6 @@
 #:kivy 1.9.1
 #:import Rectangle kivy.graphics.Rectangle
 
-<BButton>:
-    image:_image
-    size_hint:1,1
-    Image:
-        id:_image
-        opacity:0
-        source:'flag.png'
-        size_hint:None,None
-        pos_hint:None,None
-        size:root.size
-        pos:root.pos
-
-<BLabel>:
-    canvas.before:
-        Color:
-            rgba: 0.2, 0.3, 0.4, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    canvas:
-        Color:
-            rgba: 0.5, 0.5, 0.5, 1
-        Line:
-            points:self.x,self.y,self.x+self.width,self.y
-        Line:
-            points:self.x,self.y,self.x,self.y+self.height
-        Line:
-            points:self.x,self.y+self.height,self.x+self.width,self.y+self.height
-        Line:
-            points:self.x+self.width,self.y,self.x+self.width,self.y+self.height
-            
-
-<BBox>:
-    size_hint:1,1
-
 <ResetButton@Button>:
     image:_image
     size_hint:None,1
